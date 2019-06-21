@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pep8 = "*"
+
+[packages]
+django = "*"
+python-dotenv = "*"
+djangorestframework = "*"
+kaggle = "*"
+django-extensions = "*"
+django-reversion = "*"
+django-filter = "*"
+
+[requires]
+python_version = "3.6"

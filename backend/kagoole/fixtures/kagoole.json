@@ -1,0 +1,95 @@
+[
+    {
+        "model": "kagoole.competition",
+        "pk": 1,
+        "fields": {
+            "awards_points": false,
+            "category": "Playground",
+            "ended_at": "2019-07-08 23:59:00",
+            "description": "Determine whether an image contains a columnar cactus",
+            "started_at": "2019-03-08 19:22:51",
+            "evaluation_metric": "Area Under Receiver Operating Characteristic Curve",
+            "is_kernel_only": true,
+            "organization_name": "Kaggle",
+            "organization_ref": "kaggle",
+            "ref": "aerial-cactus-identification",
+            "reward": "Knowledge",
+            "team_count": 617,
+            "title": "Aerial Cactus Identification",
+            "url": "https://www.kaggle.com/c/aerial-cactus-identification",
+            "competition_id": 13435
+        }
+    },
+    {
+        "model": "kagoole.competition",
+        "pk":2,
+        "fields": {
+            "awards_points": true,
+            "category": "Featured",
+            "ended_at": "2019-06-26 23:59:00",
+            "description": "Detect toxicity across a diverse range of conversations",
+            "started_at": "2019-03-29 17:23:55",
+            "evaluation_metric": "Jigsaw Bias AUC",
+            "is_kernel_only": true,
+            "organization_name": "Jigsaw/Conversation AI",
+            "organization_ref": "jigsaw-team",
+            "ref": "jigsaw-unintended-bias-in-toxicity-classification",
+            "reward": "$65,000",
+            "team_count": 2190,
+            "title": "Jigsaw Unintended Bias in Toxicity Classification",
+            "url": "https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification",
+            "competition_id": 12500
+        }
+    },
+    {
+        "model": "kagoole.competition",
+        "pk": 3,
+        "fields": {
+            "awards_points": true,
+            "category": "Research",
+            "ended_at": "2019-03-13 23:59:00",
+            "description": "Can you predict if a machine will soon be hit with malware?",
+            "started_at": "2018-12-13 17:42:09",
+            "evaluation_metric": "Area Under Receiver Operating Characteristic Curve",
+            "is_kernel_only": false,
+            "organization_name": "Microsoft",
+            "organization_ref": "Microsoft",
+            "ref": "microsoft-malware-prediction",
+            "reward": "$25,000",
+            "team_count": 2426,
+            "title": "Microsoft Malware Prediction",
+            "url": "https://www.kaggle.com/c/microsoft-malware-prediction",
+            "competition_id": 10683
+        }
+    },
+    {
+        "model": "kagoole.solution",
+        "pk": 1,
+        "fields": {
+            "rank": 6,
+            "medal": 0,
+            "url": "https://www.kaggle.com/c/microsoft-malware-prediction/discussion/84069",
+            "ref": "microsoft-malware-prediction"
+        }
+    },
+    {
+        "model": "kagoole.solution",
+        "pk": 2,
+        "fields": {
+            "rank": 6,
+            "medal": 0,
+            "url": "https://www.kaggle.com/c/microsoft-malware-prediction/discussion/84112",
+            "ref": "microsoft-malware-prediction"
+        }
+    },
+    {
+        "model": "kagoole.solution",
+        "pk": 3,
+        "fields": {
+            "rank": 2,
+            "medal": 0,
+            "url": "https://www.kaggle.com/c/microsoft-malware-prediction/discussion/84065",
+            "ref": "microsoft-malware-prediction"
+        }
+    }
+]
