@@ -12,7 +12,7 @@ class Competition(models.Model):
     # description
     description = models.CharField(max_length=500)
     # url
-    url = models.URLField(max_length=200, null=True)
+    url = models.URLField(max_length=200)
 
     # category
     category = models.CharField(max_length=20)
