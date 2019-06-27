@@ -1,6 +1,7 @@
 import os
 import time
 import datetime
+from pytz import timezone
 
 from kaggle import KaggleApi
 
@@ -34,8 +35,11 @@ def new_competition(competition):
     can_get_award_points = getattr(competition, 'awardsPoints')
     category = getattr(competition, 'category')
     description = getattr(competition, 'description')
-    started_at = getattr(competition, 'enabledDate')
-    ended_at = getattr(competition, 'deadline')
+
+    # Add timezone
+    started_at = getattr(
+        competition, 'enabledDate').astimezone(timezone('UTC'))
+    ended_at = getattr(competition, 'deadline').astimezone(timezone('UTC'))
 
     evaluation_metric = getattr(competition, 'evaluationMetric')
     if evaluation_metric == '':
@@ -50,7 +54,8 @@ def new_competition(competition):
 
     team_count = getattr(competition, 'teamCount')
     title = getattr(competition, 'title')
-    url = getattr(competition, 'url')
+    # Do not use 'url' directly, because many competition url is null
+    url = 'https://www.kaggle.com/c/' + ref
 
     tags = getattr(competition, 'tags')
 
@@ -70,6 +75,7 @@ def new_competition(competition):
         organization_name=organization_name,
         organization_ref=organization_ref,
         ref=ref,
+        url=url,
         reward=reward,
         team_count=team_count,
         title=title,
