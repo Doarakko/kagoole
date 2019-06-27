@@ -1,53 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Table } from "react-bootstrap"
+import { Button } from "react-bootstrap"
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 
 
-class SolutionRow extends React.Component {
-    render() {
-        const solution = this.props.solution;
-
-        return (
-            <tr>
-                <td>{solution.url}</td>
-                <td>{solution.competition.title}</td>
-                <td>{solution.competition.data_types}</td>
-                <td>{solution.medal}</td>
-                <td><a href={solution.url} target="_blank" rel="noopener noreferrer">Solution</a></td>
-            </tr >
-        );
-    }
-}
-
-class SolutionTable extends React.Component {
-    render() {
-        const rows = [];
-
-        this.props.solutions.forEach((solution) => {
-            rows.push(
-                <SolutionRow
-                    solution={solution}
-                    key={solution.url} />
-            );
-        });
-        return (
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>URL</th>
-                        <th>Competition</th>
-                        <th>Data Types</th>
-                        <th>Evaluation Metric</th>
-                        <th>Kernel Only</th>
-                        <th>Rank</th>
-                        <th>Medal</th>
-                        <th>Top(%)</th>
-                    </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-            </Table>
-        );
-    }
+function buttonFormatter(cell, row) {
+    return <Button variant="secondary" size="sm">Edit</Button>;
 }
 
 class Solutions extends React.Component {
@@ -69,11 +29,58 @@ class Solutions extends React.Component {
 
     }
 
+    paginationOptions = {
+        custom: true,
+        paginationPosition: "top",
+        sizePerPage: 10,
+    };
+
+    selectIsKernelOptions = {
+        0: false,
+        1: true,
+    };
+
+    columns = [{
+        dataField: 'url',
+        text: 'URL'
+    }, {
+        dataField: 'competition_info.title',
+        text: 'Title'
+    }, {
+        dataField: 'competition_info.can_get_award_points',
+        text: 'Award Point'
+    }, {
+        dataField: 'competition_info.category',
+        text: 'Category'
+    }, {
+        dataField: 'competition_info.evaluation_metric',
+        text: 'Evaluation Metric'
+    }, {
+        dataField: 'competition_info.is_kernel_only',
+        text: 'Kernel Only',
+    }, {
+        dataField: 'competition_info.team_count',
+        text: 'Team Count',
+        sort: true
+    }, {
+        dataField: 'button',
+        isDummyField: true,
+        text: 'Edit',
+        formatter: buttonFormatter,
+    }];
+
     render() {
         return (
-            <div>
-                <h1>Solution</h1>
-                <SolutionTable solutions={this.state.solutionList} />
+            <div className="App" >
+                <h1>Solutions</h1>
+                <BootstrapTable
+                    keyField='id'
+                    data={this.state.solutionList}
+                    columns={this.columns}
+                    pagination={paginationFactory()}
+                    filter={filterFactory()}
+                    rowEvents={this.rowEvents}
+                />
             </div>
         );
     }
