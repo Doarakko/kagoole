@@ -30,7 +30,7 @@ class Competition(models.Model):
     # awardsPoints
     can_get_award_points = models.BooleanField()
     # reward
-    reward = models.CharField(max_length=20)
+    reward = models.PositiveIntegerField()
 
     # organizationName
     organization_name = models.CharField(max_length=50, null=True)
