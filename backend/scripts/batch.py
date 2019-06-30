@@ -50,7 +50,13 @@ def new_competition(competition):
     organization_name = getattr(competition, 'organizationName')
     organization_ref = getattr(competition, 'organizationRef')
     ref = getattr(competition, 'ref')
+
     reward = getattr(competition, 'reward')
+    # change reward format to int
+    if reward[0] == '$':
+        reward = reward[1:].replace(',', '')
+    else:
+        reward = 0
 
     team_count = getattr(competition, 'teamCount')
     title = getattr(competition, 'title')
