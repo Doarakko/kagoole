@@ -1,7 +1,7 @@
 import React from "react";
-import SolutionModal from "./SolutionModal";
-
 import { Button, ButtonToolbar } from "react-bootstrap"
+
+import SolutionModal from "./SolutionModal";
 
 
 class ModalButton extends React.Component {

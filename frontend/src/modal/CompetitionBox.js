@@ -1,86 +1,44 @@
 import React from "react";
-import Autosuggest from "react-autosuggest";
+import axios from "axios";
+import Select from 'react-select';
 
-
-const languages = [
-    {
-        name: 'C',
-        year: 1972
-    },
-    {
-        name: 'C#',
-        year: 2000
-    },
-    {
-        name: 'C++',
-        year: 1983
-    },
-];
-
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : languages.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-};
-
-function getSuggestionValue(suggestion) {
-    return suggestion.city_name;
-}
-
-const renderSuggestion = suggestion => (
-    <div>
-        {suggestion.name}
-    </div>
-);
 
 class CompetitionBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
-            suggestions: []
+            competition: null,
+            competitionList: [],
         };
     }
 
-    onChange = (event, { newValue, method }) => {
-        this.setState({
-            value: newValue
-        });
+    componentDidMount() {
+        axios
+            .get("competitions/")
+            .then((results) => {
+                this.setState({
+                    competitionList: results.data
+                })
+            });
     };
 
-    onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: getSuggestions(value)
-        });
-    };
-
-    onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
+    handleChange = competition => {
+        this.setState({ competition });
     };
 
     render() {
-        const { value, suggestions } = this.state;
-
-        const inputProps = {
-            placeholder: "Enter competition",
-            value,
-            onChange: this.onChange
-        };
-
         return (
-            <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps} />
-        );
+            <Select
+                name="id"
+                value={this.state.competition}
+                onChange={this.handleChange}
+                options={this.state.competitionList}
+                getOptionLabel={option => option['title']}
+                getOptionValue={option => option['id']}
+                placeholder='titanic'
+                className="basic-single"
+            />
+        )
     }
 }
 

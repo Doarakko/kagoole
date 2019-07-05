@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
+import { Button, Form, Modal } from "react-bootstrap";
 
 import CompetitionBox from "./CompetitionBox"
 
@@ -9,31 +9,39 @@ class SolutionModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            competitionList: [],
+            id: 1,
+            rank: 1,
+            solutionUrl: '',
+            medal: '',
+            includeCode: false,
         };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleSubmit = item => {
-        this.toggle();
-        if (item.id) {
-            axios
-                .put(`solutions/${item.id}/`, item)
-                .then(res => this.refreshList());
-            return;
-        }
+    handleSubmit(event) {
         axios
-            .post("Solutions/", item)
-            .then(res => this.refreshList());
+            .post("solutions/", {
+                rank: this.state.rank,
+                url: this.state.solutionUrl,
+                medal: this.state.medal,
+                include_code: this.state.includeCode,
+                competition: this.state.competitionId,
+            }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
     };
-    handleDelete = item => {
-        axios
-            .delete(`solutions/${item.id}`)
-            .then(res => this.refreshList());
+
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+        event.preventDefault();
     };
 
     render() {
-
-
         return (
             <Modal
                 onHide={this.props.onHide}
@@ -48,44 +56,50 @@ class SolutionModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="formGroupPassword">
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group>
                             <Form.Label>Competition</Form.Label>
                             <CompetitionBox />
                         </Form.Group>
-                        <Form.Group controlId="formGroupPassword">
+                        <Form.Group>
                             <Form.Label>Rank</Form.Label>
-                            <Form.Control type="number" min="1" placeholder="Private leaderboard rank" />
+                            <Form.Control
+                                type="number"
+                                placeholder="Private Leaderboard Rank"
+                                name='rank'
+                                onChange={this.handleChange}
+                                required
+                            />
                         </Form.Group>
-                        <Form.Group controlId="formGroupPassword">
+                        <Form.Group>
                             <Form.Label>Solution URL</Form.Label>
-                            <Form.Control type="url" placeholder="https://www.abcde.com/solution" />
+                            <Form.Control
+                                type="url"
+                                placeholder="https://www.abcd.com/xyz"
+                                name='solutionUrl'
+                                onChange={this.handleChange}
+                                required
+                            />
                         </Form.Group>
-                        <Form.Group controlId="formGroupPassword">
+                        <Form.Group>
                             <Form.Label>Medal</Form.Label>
-                            <Form.Control as="select">
+                            <Form.Control as="select" name='medal' onChange={this.handleChange} >
                                 <option>Gold</option>
                                 <option>Silver</option>
                                 <option>Bronze</option>
                                 <option>Nothing</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group id="formGridCheckbox">
-                            <Form.Label>Contains code</Form.Label>
-                            <Form.Check type="checkbox" />
+                        <Form.Group>
+                            <Form.Label>Include Code</Form.Label>
+                            <Form.Check type="checkbox" name='includeCode' onChange={this.handleChange} />
                         </Form.Group>
+                        <Button type="submit" variant="primary">Save</Button>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary">Save</Button>
-                    <Button variant="danger">Delete</Button>
-                    {/* <Button onClick={this.props.onHide}>Close</Button> */}
-                </Modal.Footer>
             </Modal >
         );
     }
 }
 
 export default SolutionModal;
-
-
