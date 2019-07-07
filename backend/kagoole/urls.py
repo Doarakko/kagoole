@@ -8,5 +8,4 @@ urlpatterns = [
     path('solutions/', views.SolutionList.as_view()),
     path('solutions/<int:pk>/', views.SolutionDetail.as_view()),
     path('competitions/', views.CompetitionList.as_view({'get': 'list'})),
-    path('tips/', views.TipsList.as_view()),
 ]
