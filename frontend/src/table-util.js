@@ -1,12 +1,8 @@
 import React from "react";
-import { Button } from "react-bootstrap"
 import { selectFilter, textFilter } from "react-bootstrap-table2-filter";
 
-export const paginationOptions = {
-    custom: true,
-    paginationPosition: "top",
-    sizePerPage: 8,
-};
+import DeleteModalButton from './modal/DeleteModalButton';
+
 
 export const selectPredictTypeOptions = {
     'binary classification': 'Binary Classification',
@@ -59,6 +55,7 @@ export const competitionColumns = [{
             height="40"
             width='40' />
     ),
+    align: 'center',
     headerAlign: 'center',
 }, {
     dataField: 'title',
@@ -73,8 +70,8 @@ export const competitionColumns = [{
     text: 'Organization',
     filter: textFilter(),
     align: 'center',
-    hidden: true,
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'description',
     text: 'Description',
@@ -214,7 +211,7 @@ export const solutionColumns = [{
             height="40"
             width='40' />
     ),
-    hidden: false,
+    align: 'center',
     headerAlign: 'center',
 }, {
     dataField: 'competition_info.Title',
@@ -248,6 +245,7 @@ export const solutionColumns = [{
     }),
     align: 'center',
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'url',
     text: 'URL',
@@ -285,10 +283,10 @@ export const solutionColumns = [{
     formatter: (cell, row) => (
         row.competition_info.started_at.slice(0, 10)
     ),
-    hidden: true,
     sort: true,
     align: 'center',
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'competition_info.ended_at',
     text: 'End Date',
@@ -296,9 +294,9 @@ export const solutionColumns = [{
         row.competition_info.ended_at.slice(0, 10)
     ),
     sort: true,
-    hidden: true,
     align: 'center',
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'competition_info.team_count',
     text: 'Team Count',
@@ -307,8 +305,8 @@ export const solutionColumns = [{
     ),
     sort: true,
     align: 'center',
-    hidden: true,
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'competition_info.can_get_award_points',
     text: 'Get Medal',
@@ -317,8 +315,8 @@ export const solutionColumns = [{
         options: selectBooleanOptions,
     }),
     align: 'center',
-    hidden: true,
     headerAlign: 'center',
+    hidden: true,
 }, {
     dataField: 'competition_info.is_kernel_only',
     text: 'Kernel Only',
@@ -345,6 +343,7 @@ export const solutionColumns = [{
         listToOneLineStringWithSlash(row.competition_info.data_types)
     ),
     filter: textFilter(),
+    align: 'center',
     headerAlign: 'center',
     hidden: false,
 }, {
@@ -372,11 +371,11 @@ export const solutionColumns = [{
     headerAlign: 'center',
 }, {
     isDummyField: true,
-    text: 'Operation',
-    formatter: () => (
+    dataField: 'action',
+    text: 'Action',
+    formatter: (cell, row) => (
         <div>
-            <Button variant="secondary" size="sm">Edit</Button>
-            <Button variant="danger" size="sm">Delete</Button>
+            <DeleteModalButton solution={row} />
         </div>
     ),
     align: 'center',
