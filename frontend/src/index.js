@@ -1,22 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import Solutions from './Solutions';
-import Competitions from './Competitions';
-import Header from './Header';
-import ModalButton from './modal/ModalButton';
 
+import './index.css';
+import Competitions from './Competitions';
+import Solutions from './Solutions';
+import Header from './Header';
 
 
 const routing = (
     <Router>
         <div>
             <Header />
-            <ModalButton />
             <Route exact path="/" component={Solutions} />
-            <Route path="/solutions" component={Solutions} />
             <Route path="/competitions" component={Competitions} />
+            <Route path="/solutions" component={Solutions} />
         </div>
     </Router>
 )
