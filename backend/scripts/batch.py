@@ -9,14 +9,8 @@ from backend import settings
 from kagoole.models import Competition
 
 
-DATA_TYPES = [
-    'tabular data',
-    'text data',
-    'image data',
-    'audio data',
-]
-
 PREDICT_TYPE = [
+    'classification',
     'binary classification',
     'multiclass classification',
     'regression',
@@ -30,26 +24,42 @@ def new_kaggle_api():
     return api
 
 
-# create new Competition model
-def new_competition(competition):
-    can_get_award_points = getattr(competition, 'awardsPoints')
-    category = getattr(competition, 'category')
-    description = getattr(competition, 'description')
+# create new competition dictionary
+def new_competition_dict(competition):
+    competition_dict = {}
+
+    competition_dict['competition_id'] = getattr(competition, 'id')
+    competition_dict['title'] = getattr(competition, 'title')
+
+    ref = getattr(competition, 'ref')
+    competition_dict['ref'] = ref
+    # Do not use url directly, because many competition url is null
+    competition_dict['url'] = 'https://www.kaggle.com/c/' + ref
+
+    competition_dict['can_get_award_points'] = getattr(
+        competition, 'awardsPoints')
+    competition_dict['is_kernel_only'] = getattr(
+        competition, 'isKernelsSubmissionsOnly')
+    competition_dict['team_count'] = getattr(competition, 'teamCount')
+
+    competition_dict['category'] = getattr(competition, 'category')
+    competition_dict['description'] = getattr(competition, 'description')
 
     # Add timezone
-    started_at = getattr(
+    competition_dict['started_at'] = getattr(
         competition, 'enabledDate').astimezone(timezone('UTC'))
-    ended_at = getattr(competition, 'deadline').astimezone(timezone('UTC'))
+    competition_dict['ended_at'] = getattr(
+        competition, 'deadline').astimezone(timezone('UTC'))
 
     evaluation_metric = getattr(competition, 'evaluationMetric')
     if evaluation_metric == '':
         evaluation_metric = None
+    competition_dict['evaluation_metric'] = evaluation_metric
 
-    competition_id = getattr(competition, 'id')
-    is_kernel_only = getattr(competition, 'isKernelsSubmissionsOnly')
-    organization_name = getattr(competition, 'organizationName')
-    organization_ref = getattr(competition, 'organizationRef')
-    ref = getattr(competition, 'ref')
+    competition_dict['organization_name'] = getattr(
+        competition, 'organizationName')
+    competition_dict['organization_ref'] = getattr(
+        competition, 'organizationRef')
 
     reward = getattr(competition, 'reward')
     # change reward format to int
@@ -57,89 +67,108 @@ def new_competition(competition):
         reward = reward[1:].replace(',', '')
     else:
         reward = 0
-
-    team_count = getattr(competition, 'teamCount')
-    title = getattr(competition, 'title')
-    # Do not use 'url' directly, because many competition url is null
-    url = 'https://www.kaggle.com/c/' + ref
+    competition_dict['reward'] = reward
 
     tags = getattr(competition, 'tags')
-
     # Class Tag convert to str
     tags = [str(tag) for tag in getattr(competition, 'tags')]
+
     data_types = judge_data_types(tags)
+    for data_type in data_types:
+        if data_type == 'time series':
+            tags.remove(data_type)
+        else:
+            tags.remove(data_type + ' data')
 
-    competition_model = Competition(
-        can_get_award_points=can_get_award_points,
-        category=category,
-        description=description,
-        started_at=started_at,
-        ended_at=ended_at,
-        evaluation_metric=evaluation_metric,
-        competition_id=competition_id,
-        is_kernel_only=is_kernel_only,
-        organization_name=organization_name,
-        organization_ref=organization_ref,
-        ref=ref,
-        url=url,
-        reward=reward,
-        team_count=team_count,
-        title=title,
-        # tags=tags,
-        # data_types=data_types,
-    )
+    predict_type = judge_predict_type(tags)
+    if predict_type is not None:
+        tags.remove(predict_type)
 
-    return competition_model
+    competition_dict['tags'] = tags
+    competition_dict['data_types'] = data_types
+    competition_dict['predict_type'] = predict_type
+
+    return competition_dict
 
 
 def judge_data_types(tags):
-    # tabular, text, image, audio
-    is_etc_data = True
-
     data_types = []
     for tag in tags:
-        if tag in DATA_TYPES:
+        if tag.find('data') != -1:
+            data_types.append(tag.split()[0])
+        elif tag == 'time series':
             data_types.append(tag)
-            is_etc_data = False
-
-    if is_etc_data:
-        data_types.append('etc')
 
     return data_types
 
 
 def judge_predict_type(tags):
-    pass
+    predict_type = None
+    for tag in tags:
+        if tag in PREDICT_TYPE:
+            predict_type = tag
+
+    return predict_type
 
 
-def create_new_competitions():
+# create new Competition model
+def create_competition(competition_dict):
+    competition_model = Competition.objects.create(
+        can_get_award_points=competition_dict['can_get_award_points'],
+        category=competition_dict['category'],
+        description=competition_dict['description'],
+        started_at=competition_dict['started_at'],
+        ended_at=competition_dict['ended_at'],
+        evaluation_metric=competition_dict['evaluation_metric'],
+        competition_id=competition_dict['competition_id'],
+        is_kernel_only=competition_dict['is_kernel_only'],
+        organization_name=competition_dict['organization_name'],
+        organization_ref=competition_dict['organization_ref'],
+        ref=competition_dict['ref'],
+        url=competition_dict['url'],
+        reward=competition_dict['reward'],
+        team_count=competition_dict['team_count'],
+        title=competition_dict['title'],
+        tags=competition_dict['tags'],
+        data_types=competition_dict['data_types'],
+        predict_type=competition_dict['predict_type'],
+    )
+
+
+# update new Competition model
+def update_competition(competition_dict):
+    obj = Competition.objects.get(
+        competition_id=competition_dict['competition_id'])
+
+    for (key, value) in competition_dict.items():
+        setattr(obj, key, value)
+
+    obj.save()
+
+
+# create and update competitions
+# If you want to create and update all competitions, change in_progress param to False
+def save_competitions(page, in_progress=True):
     api = new_kaggle_api()
 
-    for competition in api.competitions_list(sort_by='recentlyCreated'):
-        start_date = getattr(competition, 'enabledDate')
-
-        # assume to run once a day
-        pre_date = datetime.datetime.utcnow() - datetime.timedelta(days=1)
-
-        if start_date >= pre_date:
-            competition_model = new_competition(competition)
-            competition_model.save()
-
-
-def create_all_competitions(page):
-    api = new_kaggle_api()
-
-    competitions = api.competitions_list(page=page, sort_by='earliestDeadline')
+    competitions = api.competitions_list(sort_by='latestDeadline', page=page)
     time.sleep(1)
     for competition in competitions:
-        competition_model = new_competition(competition)
-        competition_model.save()
+        if in_progress:
+            now = datetime.datetime.utcnow()
+            ended_at = getattr(competition, 'deadline')
+
+            if ended_at < now:
+                return 0
+
+        if Competition.objects.filter(competition_id=getattr(competition, 'id')).exists():
+            update_competition(new_competition_dict(competition))
+        else:
+            create_competition(new_competition_dict(competition))
 
     if competitions != []:
-        create_all_competitions(page=page+1)
+        save_competitions(page=page+1, in_progress=in_progress)
 
 
 def run():
-    # create_new_competitions()
-
-    create_all_competitions(page=1)
+    save_competitions(page=1)
