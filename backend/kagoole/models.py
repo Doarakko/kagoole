@@ -25,7 +25,7 @@ class Competition(models.Model):
         models.CharField(max_length=30)
     )
     data_types = ArrayField(
-        models.CharField(max_length=10)
+        models.CharField(max_length=15)
     )
     predict_type = models.CharField(max_length=30, null=True)
 
