@@ -1,23 +1,22 @@
+import time
+import datetime
+
 from django.db.models import Count
 from rest_framework import serializers
 
-from kagoole.models import Competition, Solution, Tips
+from kagoole.models import Competition, Solution
 
 
 class CompetitionSerializer(serializers.ModelSerializer):
-    solution_count = serializers.SerializerMethodField()
+    is_in_progress = serializers.SerializerMethodField()
 
     class Meta:
         model = Competition
         fields = '__all__'
-        extra_fields = ['solution_count']
+        extra_fields = ['is_in_progress']
 
-    def get_solution_count(self, obj):
-        try:
-            return Solution.objects.filter(competition__id=obj.pk).values(
-                'competition').annotate(total=Count('competition')).get()['total']
-        except Exception as e:
-            return 0
+    def get_is_in_progress(self, obj):
+        return obj.ended_at.replace(tzinfo=None) > datetime.datetime.utcnow()
 
 
 class SolutionSerializer(serializers.ModelSerializer):
@@ -37,15 +36,15 @@ class SolutionSerializer(serializers.ModelSerializer):
             category=getattr(
                 obj.competition, 'category'),
             evaluation_metric=getattr(obj.competition, 'evaluation_metric'),
+            is_kernel_only=getattr(obj.competition, 'is_kernel_only'),
+            team_count=getattr(obj.competition, 'team_count'),
+            url=getattr(obj.competition, 'url'),
+            data_types=getattr(obj.competition, 'data_types'),
+            started_at=getattr(obj.competition, 'started_at'),
+            ended_at=getattr(obj.competition, 'ended_at'),
+            tags=getattr(obj.competition, 'tags'),
+            organization_name=getattr(obj.competition, 'organization_name'),
+            competition_id=getattr(obj.competition, 'competition_id'),
+            reward=getattr(obj.competition, 'reward'),
+            description=getattr(obj.competition, 'description'),
         )
-
-    # def validate_rank(self, value):
-    #     if value <= 0:
-    #         raise serializers.ValidationError(
-    #             'A valid positive integer is required.')
-
-
-class TipsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tips
-        fields = '__all__'
