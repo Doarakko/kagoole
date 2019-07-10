@@ -6,7 +6,7 @@ from pytz import timezone
 from kaggle import KaggleApi
 
 from backend import settings
-from kagoole.models import Competition
+from kagoole.models import Competition, Solution
 
 
 PREDICT_TYPE = [
@@ -170,5 +170,13 @@ def save_competitions(page, in_progress=True):
         save_competitions(page=page+1, in_progress=in_progress)
 
 
+def update_solution_count():
+    for competition in Competition.objects.all():
+        competition.solution_count = Solution.objects.filter(
+            competition=competition.id).count()
+        competition.save()
+
+
 def run():
     save_competitions(page=1)
+    update_solution_count()
