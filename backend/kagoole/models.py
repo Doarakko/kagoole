@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.postgres.fields import ArrayField
 
+from kagoole.util import post_slack
+
 
 class Competition(models.Model):
     # id
@@ -49,6 +51,8 @@ class Competition(models.Model):
     # deadline
     ended_at = models.DateTimeField()
 
+    solution_count = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.title
 
@@ -74,5 +78,9 @@ class Solution(models.Model):
     def __str__(self):
         return self.url
 
-    # def save(self):
-    #     top_rate = self.rank / self.competition.team_count
+    def delete(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        value = '{}\nRank {} {}\n{}'.format(
+            self.competition, self.rank, self.medal, self.url)
+        post_slack(title='Solution is deleted', value=value)
