@@ -1,3 +1,7 @@
+import React from "react";
+import { Button, Spinner } from "react-bootstrap"
+
+
 export const selectPredictTypeOptions = {
     'classification': 'Classification',
     'binary classification': 'Binary classification',
@@ -40,9 +44,6 @@ export const solutionDefaultSorted = [{
     order: 'desc'
 }];
 
-
-
-
 export function listToOneLineStringWithSlash(list) {
     var s = '';
     for (let i = 0; i < list.length; i++) {
@@ -54,3 +55,25 @@ export function listToOneLineStringWithSlash(list) {
     }
     return s;
 }
+
+export function SearchResult(rowCount, listSize) {
+    if (listSize === 0) {
+        return (
+            <Spinner animation="border" variant="primary" />
+        );
+    }
+    return (
+        <div className='search-result'> {rowCount} / {listSize}</div >
+    );
+}
+
+
+export const ClearButton = (props) => {
+    const handleClick = () => {
+        props.onSearch('');
+        props.clearAllFilter();
+    };
+    return (
+        <Button variant="secondary" onClick={handleClick}>Clear</Button>
+    );
+};
