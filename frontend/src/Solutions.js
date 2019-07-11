@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { Button } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
@@ -49,7 +48,7 @@ class Solutions extends React.Component {
         align: 'center',
         headerAlign: 'center',
     }, {
-        dataField: 'competition_info.Title',
+        dataField: 'competition_info.title',
         text: 'Title',
         formatter: (cell, row) => (
             <a href={row.competition_info.url}> {row.competition_info.title}</a>
@@ -262,13 +261,14 @@ class Solutions extends React.Component {
 
     componentDidMount() {
         this.refreshSolutionList();
+        titleFilter(this.getUrlCompetitionTitle());
     };
 
     handleDataChange = ({ dataSize }) => {
         this.setState({ rowCount: dataSize });
     };
 
-    handleClearClick() {
+    clearAllFilter() {
         titleFilter('');
         medalFilter('');
         // includeCodeFilter();
@@ -294,6 +294,15 @@ class Solutions extends React.Component {
             .catch(err => console.log(err));
     };
 
+    getUrlCompetitionTitle() {
+        let params = this.props.location.search;
+        if (params === '' || params.indexOf('title=') === -1) {
+            return '';
+        }
+        params = decodeURI(params);
+        return params.slice(params.indexOf('=') + 1);
+    }
+
     render() {
         return (
             <div>
@@ -310,14 +319,12 @@ class Solutions extends React.Component {
                         props => (
                             <div>
                                 <SearchBar {...props.searchProps} />
-                                <Button
-                                    variant="secondary"
-                                    onClick={this.handleClearClick}
-                                >
-                                    Clear
-                                </Button>
-                                <h5>{this.state.rowCount} / {this.state.solutionList.length}</h5>
-                                <SaveModalButton />
+                                <TableUtil.ClearButton
+                                    {...props.searchProps}
+                                    clearAllFilter={this.clearAllFilter}
+                                />
+                                {TableUtil.SearchResult(this.state.rowCount, this.state.solutionList.length)}
+                                <SaveModalButton buttonText='Add Solution' />
                                 <hr />
                                 <ToggleList {...props.columnToggleProps} />
                                 <BootstrapTable
@@ -326,7 +333,7 @@ class Solutions extends React.Component {
                                     filter={filterFactory()}
                                     onDataSizeChange={this.handleDataChange}
                                     defaultSorted={TableUtil.solutionDefaultSorted}
-                                    noDataIndication="Table is Empty"
+                                    noDataIndication="There is no solution"
                                     striped
                                     hover
                                     condensed
@@ -339,6 +346,5 @@ class Solutions extends React.Component {
         );
     }
 }
-
 
 export default Solutions;
