@@ -35,7 +35,7 @@ class SaveModal extends React.Component {
     async handleSubmit(event) {
         axios
             .post("solutions/", {
-                competition: this.state.competition.id,
+                competition: this.state.competition.ref,
                 rank: this.state.rank,
                 url: this.state.solutionUrl,
                 medal: this.state.medal,
@@ -78,12 +78,12 @@ class SaveModal extends React.Component {
                         <Form.Group>
                             <Form.Label>Competition</Form.Label>
                             <Select
-                                name="id"
-                                value={this.state.id}
+                                name="ref"
+                                value={this.state.ref}
                                 onChange={this.handleCompetitionChange}
                                 options={this.state.competitionList}
                                 getOptionLabel={option => option['title'] + ': ' + option['ended_at'].slice(0, 10)}
-                                getOptionValue={option => option['id']}
+                                getOptionValue={option => option['ref']}
                                 noOptionsMessage={() => 'No competition'}
                                 placeholder='Enter competition name'
                                 className="basic-single"

@@ -28,7 +28,7 @@ def new_kaggle_api():
 def new_competition_dict(competition):
     competition_dict = {}
 
-    competition_dict['competition_id'] = getattr(competition, 'id')
+    competition_dict['kaggle_competition_id'] = getattr(competition, 'id')
     competition_dict['title'] = getattr(competition, 'title')
 
     ref = getattr(competition, 'ref')
@@ -120,7 +120,7 @@ def create_competition(competition_dict):
         started_at=competition_dict['started_at'],
         ended_at=competition_dict['ended_at'],
         evaluation_metric=competition_dict['evaluation_metric'],
-        competition_id=competition_dict['competition_id'],
+        kaggle_competition_id=competition_dict['kaggle_competition_id'],
         is_kernel_only=competition_dict['is_kernel_only'],
         organization_name=competition_dict['organization_name'],
         organization_ref=competition_dict['organization_ref'],
@@ -138,7 +138,7 @@ def create_competition(competition_dict):
 # update new Competition model
 def update_competition(competition_dict):
     obj = Competition.objects.get(
-        competition_id=competition_dict['competition_id'])
+        kaggle_competition_id=competition_dict['kaggle_competition_id'])
 
     for (key, value) in competition_dict.items():
         setattr(obj, key, value)
@@ -161,7 +161,7 @@ def save_competitions(page, in_progress=True):
             if ended_at < now:
                 return 0
 
-        if Competition.objects.filter(competition_id=getattr(competition, 'id')).exists():
+        if Competition.objects.filter(kaggle_competition_id=getattr(competition, 'id')).exists():
             update_competition(new_competition_dict(competition))
         else:
             create_competition(new_competition_dict(competition))
@@ -173,7 +173,7 @@ def save_competitions(page, in_progress=True):
 def update_solution_count():
     for competition in Competition.objects.all():
         competition.solution_count = Solution.objects.filter(
-            competition=competition.id).count()
+            competition=competition.ref).count()
         competition.save()
 
 

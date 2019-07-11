@@ -44,7 +44,8 @@ class SolutionSerializer(serializers.ModelSerializer):
             ended_at=getattr(obj.competition, 'ended_at'),
             tags=getattr(obj.competition, 'tags'),
             organization_name=getattr(obj.competition, 'organization_name'),
-            competition_id=getattr(obj.competition, 'competition_id'),
+            kaggle_competition_id=getattr(
+                obj.competition, 'kaggle_competition_id'),
             reward=getattr(obj.competition, 'reward'),
             description=getattr(obj.competition, 'description'),
         )

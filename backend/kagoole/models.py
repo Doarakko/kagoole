@@ -7,9 +7,9 @@ from kagoole.util import post_slack
 
 class Competition(models.Model):
     # id
-    competition_id = models.PositiveIntegerField(unique=True)
+    kaggle_competition_id = models.PositiveIntegerField(unique=True)
     # ref
-    ref = models.CharField(max_length=100, unique=True)
+    ref = models.CharField(max_length=100, primary_key=True)
     # title
     title = models.CharField(max_length=100)
     # description
