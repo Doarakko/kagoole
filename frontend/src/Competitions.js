@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { Button } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
@@ -24,12 +23,13 @@ let predictTypeFilter;
 let tagsFilter;
 let evaluationMetricFilter;
 
+
 class Competitions extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             competitionList: [],
-            rowCount: 0
+            rowCount: 0,
         };
     };
 
@@ -49,13 +49,22 @@ class Competitions extends React.Component {
         dataField: 'title',
         text: 'Title',
         formatter: (cell, row) => (
-            <a href={row.url}> {row.title}</a>
+            <a href={row.url}>{row.title}</a>
         ),
         filter: textFilter({
             getFilter: (filter) => {
                 titleFilter = filter;
             }
         }),
+        headerAlign: 'center',
+    }, {
+        dataField: 'solution_count',
+        text: 'Solution',
+        formatter: (cell, row) => (
+            this.solutionCountFormatter(row)
+        ),
+        sort: true,
+        align: 'center',
         headerAlign: 'center',
     }, {
         dataField: 'organization_name',
@@ -214,7 +223,14 @@ class Competitions extends React.Component {
         this.setState({ rowCount: dataSize });
     };
 
-    handleClearClick() {
+    solutionCountFormatter(row) {
+        if (row.solution_count === 0) {
+            return 0;
+        }
+        return <a href={'http://localhost:3000/solutions?title=' + row.title}> {row.solution_count}</a>
+    }
+
+    clearAllFilter() {
         titleFilter('');
         // organizationFilter();
         // descriptionFilter();
@@ -256,14 +272,12 @@ class Competitions extends React.Component {
                         props => (
                             <div>
                                 <SearchBar {...props.searchProps} />
-                                <Button
-                                    variant="secondary"
-                                    onClick={this.handleClearClick}
-                                >
-                                    Clear
-                                </Button>
-                                <h5>{this.state.rowCount} / {this.state.competitionList.length}</h5>
-                                <SaveModalButton />
+                                <TableUtil.ClearButton
+                                    {...props.searchProps}
+                                    clearAllFilter={this.clearAllFilter}
+                                />
+                                {TableUtil.SearchResult(this.state.rowCount, this.state.competitionList.length)}
+                                <SaveModalButton buttonText='Add Solution' />
                                 <hr />
                                 <ToggleList {...props.columnToggleProps} />
                                 <hr />
@@ -273,7 +287,7 @@ class Competitions extends React.Component {
                                     filter={filterFactory()}
                                     defaultSorted={TableUtil.competitionDefaultSorted}
                                     onDataSizeChange={this.handleDataChange}
-                                    noDataIndication="Table is Empty"
+                                    noDataIndication="There is no competition"
                                     striped
                                     hover
                                     condensed
