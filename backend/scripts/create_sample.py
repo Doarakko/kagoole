@@ -62,7 +62,7 @@ def create_competition(competition):
     competition_json['started_at'] = str(getattr(competition, 'enabledDate'))
     competition_json['evaluation_metric'] = getattr(
         competition, 'evaluationMetric')
-    competition_json['competition_id'] = getattr(competition, 'id')
+    competition_json['kaggle_competition_id'] = getattr(competition, 'id')
     competition_json['is_kernel_only'] = getattr(
         competition, 'isKernelsSubmissionsOnly')
     competition_json['organization_name'] = getattr(
