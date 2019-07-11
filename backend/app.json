@@ -1,0 +1,31 @@
+{
+    "name": "Kagoole",
+    "description": "",
+    "repository": "https://github.com/Doarakko/kagoole",
+    "logo": "https://avatars0.githubusercontent.com/u/1336944",
+    "keywords": [
+        "kaggle"
+    ],
+    "env": {
+        "SLACK_WEBHOOK_URL": {
+            "description": "You only need to enter slack or line.",
+            "value": "your webhook url"
+        },
+        "KAGGLE_KEY": {
+            "description": "kaggle key",
+            "value": "your key"
+        },
+        "KAGGLE_USERNAME": {
+            "description": "kaggle username",
+            "value": "your username"
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-python"
+        }
+    ],
+    "addons": [
+        "scheduler:standard"
+    ]
+}
