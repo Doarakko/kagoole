@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
+import { Button, Form, Modal } from "react-bootstrap";
 
 
 class DeleteModal extends React.Component {
@@ -10,7 +10,7 @@ class DeleteModal extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    };
 
     handleSubmit(event) {
         axios
@@ -41,15 +41,27 @@ class DeleteModal extends React.Component {
                 <Modal.Body>
                     <Form onSubmit={this.handleSubmit}>
                         <h5>Competition</h5>
+                        <img
+                            src={'https://storage.googleapis.com/kaggle-competitions/kaggle/' + this.props.solution.competition_info.competition_id + '/logos/thumb76_76.png'}
+                            alt='competition logo'
+                            height="40"
+                            width='40' />
                         {this.props.solution.competition_info.title}
+                        <h5>End Date</h5>
+                        {this.props.solution.competition_info.ended_at.slice(0, 10)}
                         <h5>Rank</h5>
-                        {this.props.solution.competition_info.title}
-
-                        If you delete by mistake, please contact from here.
+                        {this.props.solution.rank}
+                        <h5>Medal</h5>
+                        {this.props.solution.medal}
+                        <h5>Solution URL</h5>
+                        {this.props.solution.url}
+                        <br />
+                        <br />
+                        If you delete by mistake, please contact from <a href='fd'>here</a>.
                         <Modal.Footer>
                             <Button type="submit" variant="danger" onClick={this.props.onHide}>
                                 Delete
-                        </Button>
+                            </Button>
                         </Modal.Footer>
                     </Form>
                 </Modal.Body>
