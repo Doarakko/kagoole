@@ -42,7 +42,7 @@ class DeleteModal extends React.Component {
                     <Form onSubmit={this.handleSubmit}>
                         <h5>Competition</h5>
                         <img
-                            src={'https://storage.googleapis.com/kaggle-competitions/kaggle/' + this.props.solution.competition_info.competition_id + '/logos/thumb76_76.png'}
+                            src={'https://storage.googleapis.com/kaggle-competitions/kaggle/' + this.props.solution.competition_info.kaggle_competition_id + '/logos/thumb76_76.png'}
                             alt='competition logo'
                             height="40"
                             width='40' />

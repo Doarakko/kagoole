@@ -36,11 +36,11 @@ class Solutions extends React.Component {
     };
 
     columns = [{
-        dataField: 'competition_info.competition_id',
+        dataField: 'competition_info.kaggle_competition_id',
         text: '#',
         formatter: (cell, row) => (
             <img
-                src={'https://storage.googleapis.com/kaggle-competitions/kaggle/' + row.competition_info.competition_id + '/logos/thumb76_76.png'}
+                src={'https://storage.googleapis.com/kaggle-competitions/kaggle/' + row.competition_info.kaggle_competition_id + '/logos/thumb76_76.png'}
                 alt='competition logo'
                 height="40"
                 width='40' />
