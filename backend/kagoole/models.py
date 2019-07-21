@@ -79,7 +79,7 @@ class Solution(models.Model):
         return self.url
 
     def delete(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
         value = '{}\nRank {} {}\n{}'.format(
             self.competition, self.rank, self.medal, self.url)
