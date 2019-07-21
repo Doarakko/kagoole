@@ -262,7 +262,7 @@ class Competitions extends React.Component {
 
                 <ToolkitProvider
                     bootstrap4
-                    keyField='id'
+                    keyField='kaggle_competition_id'
                     data={this.state.competitionList}
                     columns={this.columns}
                     columnToggle
