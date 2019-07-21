@@ -59,7 +59,10 @@ class DeleteModal extends React.Component {
                         <br />
                         If you delete by mistake, please contact from <a href='fd'>here</a>.
                         <Modal.Footer>
-                            <Button type="submit" variant="danger" onClick={this.props.onHide}>
+                            <Button
+                                type="submit"
+                                variant="danger"
+                                onClick={this.props.onHide}>
                                 Delete
                             </Button>
                         </Modal.Footer>
