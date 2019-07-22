@@ -1,12 +1,20 @@
 import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { withFormik } from "formik";
+import { withFormik, ErrorMessage as FormikErrorMessage } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import Select from 'react-select';
 
 
-const MyForm = props => {
+const ErrorMessage = props => {
+    return (
+        <div style={{ color: "red", marginTop: ".5rem" }} >
+            <FormikErrorMessage name={props.name} />
+        </div>
+    )
+}
+
+const SolutionSaveForm = props => {
     const {
         values,
         touched,
@@ -38,13 +46,13 @@ const MyForm = props => {
                     placeholder="Private Leaderboard Rank"
                     name='rank'
                     id='rank'
+                    min="1"
+                    max={values.competition.team_count}
                     value={values.rank}
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                {errors.rank && touched.rank && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>{errors.rank}</div>
-                )}
+                <ErrorMessage name="rank" />
             </Form.Group>
             <Form.Group>
                 <Form.Label>Solution URL</Form.Label>
@@ -55,9 +63,7 @@ const MyForm = props => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                {errors.solutionUrl && touched.solutionUrl && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>{errors.solutionUrl}</div>
-                )}
+                <ErrorMessage name="solutionUrl" />
             </Form.Group>
             <Form.Group>
                 <Form.Label>Medal</Form.Label>
@@ -90,17 +96,18 @@ const MyForm = props => {
                     type="submit"
                     variant="primary"
                     disabled={isSubmitting}
-                    onClick={isValid && props.onHide}
+                    onClick={isValid ? props.onHide : undefined}
                 >
                     Save
-            </Button>
+                </Button>
             </Modal.Footer>
         </Form >
     );
 };
 
 
-const formikEnhancer = withFormik({
+
+const EnhancedForm = withFormik({
     validationSchema: yup.object().shape({
         competition: yup.object()
             .required("Competition is required"),
@@ -110,8 +117,21 @@ const formikEnhancer = withFormik({
             .required("Rank is required"),
         solutionUrl: yup.string()
             .url("Solution URL must be a valid URL")
-            .required("Solution URL is required"),
+            .required("Solution URL is required")
     }),
+    validate: values => {
+        let errors = {};
+        let now = new Date().toISOString();
+
+        if (values.competition.ended_at > now) {
+            errors.competition = "This competition is in progress";
+        }
+
+        if (values.rank > values.competition.team_count) {
+            errors.rank = "Team count is " + values.competition.team_count;
+        }
+        return errors;
+    },
 
     mapPropsToValues: props => ({
         competition: "",
@@ -122,22 +142,42 @@ const formikEnhancer = withFormik({
     }),
 
     handleSubmit: (values) => {
+        let result;
         axios
-            .post("solutions/", {
-                competition: values.competition.ref,
-                rank: values.rank,
-                url: values.solutionUrl,
-                medal: values.medal,
-                include_code: values.includeCode,
-            }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
+            .get("solutions/", {
+                params: {
+                    url: values.solutionUrl,
                 }
-            )
+            })
+            .then((results) => {
+                result = results.data;
+                console.log(result);
+                if (result.length >= 1) {
+                    alert(
+                        "This solution is already registered.\n\n"
+                        + "Competition: " + result[0].competition_info.title + "\n"
+                        + "Rank: " + result[0].rank + "\n"
+                    );
+                } else {
+                    axios
+                        .post("solutions/", {
+                            competition: values.competition.ref,
+                            rank: values.rank,
+                            url: values.solutionUrl,
+                            medal: values.medal,
+                            include_code: values.includeCode,
+                        }, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            }
+                        )
+                        .catch(err => console.log(err));
+                }
+            })
             .catch(err => console.log(err));
     },
-});
+})(SolutionSaveForm);
 
 
 class CompetitionSelect extends React.Component {
@@ -184,20 +224,14 @@ class CompetitionSelect extends React.Component {
                     placeholder='Enter competition name'
                     className="basic-single"
                 />
-                {!!this.props.error && this.props.touched && (
-                    <div style={{ color: "red", marginTop: ".5rem" }}>
-                        {this.props.error}
-                    </div>
-                )}
+                <ErrorMessage name="competition" />
             </Form.Group>
         );
     }
 }
 
-const MyEnhancedForm = formikEnhancer(MyForm);
 
 class SaveModal extends React.Component {
-    MyEnhancedForm = formikEnhancer(MyForm);
     render() {
         return (
             <Modal
@@ -213,7 +247,7 @@ class SaveModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <MyEnhancedForm onHide={this.props.onHide} />
+                    <EnhancedForm onHide={this.props.onHide} />
                 </Modal.Body>
             </Modal >
         );
