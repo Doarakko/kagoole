@@ -57,7 +57,7 @@ class DeleteModal extends React.Component {
                         {this.props.solution.url}
                         <br />
                         <br />
-                        If you delete by mistake, please contact from <a href='fd'>here</a>.
+                        If you delete by mistake, please contact from <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZlhz5UK92LLY126uBaKXIl8AstQpaxlPhWcC8aHO2SE5FeQ/viewform?usp=sf_link">here</a>.
                         <Modal.Footer>
                             <Button
                                 type="submit"
