@@ -29,7 +29,10 @@ def new_competition_dict(competition):
     competition_dict = {}
 
     competition_dict['kaggle_competition_id'] = getattr(competition, 'id')
-    competition_dict['title'] = getattr(competition, 'title')
+    title = getattr(competition, 'title')
+    competition_dict['title'] = title
+    description = getattr(competition, 'description')
+    competition_dict['description'] = description
 
     ref = getattr(competition, 'ref')
     competition_dict['ref'] = ref
@@ -43,18 +46,12 @@ def new_competition_dict(competition):
     competition_dict['team_count'] = getattr(competition, 'teamCount')
 
     competition_dict['category'] = getattr(competition, 'category')
-    competition_dict['description'] = getattr(competition, 'description')
 
     # Add timezone
     competition_dict['started_at'] = getattr(
         competition, 'enabledDate').astimezone(timezone('UTC'))
     competition_dict['ended_at'] = getattr(
         competition, 'deadline').astimezone(timezone('UTC'))
-
-    evaluation_metric = getattr(competition, 'evaluationMetric')
-    if evaluation_metric == '':
-        evaluation_metric = None
-    competition_dict['evaluation_metric'] = evaluation_metric
 
     competition_dict['organization_name'] = getattr(
         competition, 'organizationName')
@@ -69,20 +66,19 @@ def new_competition_dict(competition):
         reward = 0
     competition_dict['reward'] = reward
 
+    evaluation_metric = getattr(competition, 'evaluationMetric')
+    if evaluation_metric == '':
+        evaluation_metric = None
+    competition_dict['evaluation_metric'] = evaluation_metric
+
     tags = getattr(competition, 'tags')
     # Class Tag convert to str
     tags = [str(tag) for tag in getattr(competition, 'tags')]
+    tags = add_additional_tags(tags, evaluation_metric)
 
-    data_types = judge_data_types(tags)
-    for data_type in data_types:
-        if data_type == 'time series':
-            tags.remove(data_type)
-        else:
-            tags.remove(data_type + ' data')
-
-    predict_type = judge_predict_type(tags)
-    if predict_type is not None:
-        tags.remove(predict_type)
+    data_types, tags = judge_data_types(tags, evaluation_metric)
+    predict_type, tags = judge_predict_type(
+        tags, title, description, evaluation_metric)
 
     competition_dict['tags'] = tags
     competition_dict['data_types'] = data_types
@@ -91,24 +87,80 @@ def new_competition_dict(competition):
     return competition_dict
 
 
-def judge_data_types(tags):
+def add_additional_tags(tags, evaluation_metric):
+    if evaluation_metric is None:
+        return tags
+
+    # judge based on evaluation_metric
+    evaluation_metric_keywords = {
+        'objectdetection': 'object detection',
+        'objectsegmentation': 'object segmentation',
+    }
+    for keyword in evaluation_metric_keywords:
+        if keyword not in tags and evaluation_metric.lower().find(keyword) != -1:
+            tags.append(evaluation_metric_keywords[keyword])
+    return tags
+
+
+def judge_data_types(tags, evaluation_metric):
     data_types = []
     for tag in tags:
-        if tag.find('data') != -1:
+        if tag.lower().find('data') != -1:
             data_types.append(tag.split()[0])
         elif tag == 'time series':
             data_types.append(tag)
 
-    return data_types
+    # judge based on evaluation_metric
+    if 'image' not in data_types and evaluation_metric is not None and evaluation_metric.lower().find('image') != -1:
+        data_types.append('image')
+
+    # delete depulicate tag
+    for data_type in data_types:
+        if data_type == 'time series' and 'time series' in tags:
+            tags.remove(data_type)
+        elif data_type + ' data' in tags:
+            tags.remove(data_type + ' data')
+
+    return data_types, tags
 
 
-def judge_predict_type(tags):
+def judge_predict_type(tags, title, description, evaluation_metric):
     predict_type = None
     for tag in tags:
         if tag in PREDICT_TYPE:
             predict_type = tag
 
-    return predict_type
+    # judge based on title
+    if predict_type is None:
+        if title.lower().find('classification') != -1:
+            predict_type = 'classification'
+
+    # judge based on description
+    if predict_type is None:
+        if description.lower().find('classification') != -1:
+            predict_type = 'classification'
+
+    # judge based on evaluation_metric
+    evaluation_metric_keywords = {
+        'classification': 'classification',
+        'accuracy': 'classification',
+        'auc': 'classification',
+        'area under receiver': 'classification',
+        'f-score': 'classification',
+        'loss': 'classification',
+        'error': 'regression',
+    }
+    if predict_type is None and evaluation_metric is not None:
+        for keyword in evaluation_metric_keywords:
+            if evaluation_metric.lower().find(keyword) != -1:
+                predict_type = evaluation_metric_keywords[keyword]
+                break
+
+    # delete depulicate tag
+    if predict_type is not None and predict_type in tags:
+        tags.remove(predict_type)
+
+    return predict_type, tags
 
 
 # create new Competition model
@@ -178,5 +230,5 @@ def update_solution_count():
 
 
 def run():
-    save_competitions(page=1)
+    save_competitions(page=1, in_progress=True)
     update_solution_count()
