@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonToolbar } from "react-bootstrap"
+import { Button, ButtonToolbar } from "react-bootstrap";
 
 import SaveModal from "./SaveModal";
 
@@ -19,7 +19,8 @@ class SaveModalButton extends React.Component {
         return (
             <ButtonToolbar>
                 <Button
-                    variant="primary"
+                    variant="link"
+                    style={{ color: "white" }}
                     onClick={() => this.setState({ modalShow: true })}
                 >
                     {this.props.buttonText}

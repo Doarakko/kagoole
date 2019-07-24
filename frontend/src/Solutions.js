@@ -5,7 +5,6 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider, { ColumnToggle, Search } from 'react-bootstrap-table2-toolkit';
 
-import SaveModalButton from './modal/SaveModalButton';
 import DeleteModalButton from './modal/DeleteModalButton';
 import * as TableUtil from './table-util'
 
@@ -318,26 +317,30 @@ class Solutions extends React.Component {
                 >{
                         props => (
                             <div>
-                                <SearchBar {...props.searchProps} />
-                                <TableUtil.ClearButton
-                                    {...props.searchProps}
-                                    clearAllFilter={this.clearAllFilter}
-                                />
-                                {TableUtil.SearchResult(this.state.rowCount, this.state.solutionList.length)}
-                                <SaveModalButton buttonText='Add Solution' />
-                                <hr />
-                                <ToggleList {...props.columnToggleProps} />
-                                <BootstrapTable
-                                    {...props.baseProps}
-                                    pagination={paginationFactory()}
-                                    filter={filterFactory()}
-                                    onDataSizeChange={this.handleDataChange}
-                                    defaultSorted={TableUtil.solutionDefaultSorted}
-                                    noDataIndication="There is no solution"
-                                    striped
-                                    hover
-                                    condensed
-                                />
+                                <div style={{ textAlign: "center", verticalAlign: "middle" }} >
+                                    <SearchBar {...props.searchProps} style={{ width: "400px", height: "40px" }} />
+                                    <TableUtil.ClearButton
+                                        {...props.searchProps}
+                                        clearAllFilter={this.clearAllFilter}
+                                    />
+                                    <TableUtil.SearchResult rowCount={this.state.rowCount} listSize={this.state.solutionList.length} />
+                                </div>
+                                <div style={{ width: "100%", padding: "10px" }} >
+                                    <div style={{ paddingBottom: "10px" }} >
+                                        <ToggleList {...props.columnToggleProps} />
+                                    </div>
+                                    <BootstrapTable
+                                        {...props.baseProps}
+                                        pagination={paginationFactory()}
+                                        filter={filterFactory()}
+                                        onDataSizeChange={this.handleDataChange}
+                                        defaultSorted={TableUtil.solutionDefaultSorted}
+                                        noDataIndication="There is no solution"
+                                        striped
+                                        hover
+                                        condensed
+                                    />
+                                </div>
                             </div>
                         )
                     }

@@ -5,7 +5,6 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider, { ColumnToggle, Search } from 'react-bootstrap-table2-toolkit';
 
-import SaveModalButton from './modal/SaveModalButton';
 import * as TableUtil from './table-util'
 
 const { ToggleList } = ColumnToggle;
@@ -271,27 +270,30 @@ class Competitions extends React.Component {
                     {
                         props => (
                             <div>
-                                <SearchBar {...props.searchProps} />
-                                <TableUtil.ClearButton
-                                    {...props.searchProps}
-                                    clearAllFilter={this.clearAllFilter}
-                                />
-                                {TableUtil.SearchResult(this.state.rowCount, this.state.competitionList.length)}
-                                <SaveModalButton buttonText='Add Solution' />
-                                <hr />
-                                <ToggleList {...props.columnToggleProps} />
-                                <hr />
-                                <BootstrapTable
-                                    {...props.baseProps}
-                                    pagination={paginationFactory()}
-                                    filter={filterFactory()}
-                                    defaultSorted={TableUtil.competitionDefaultSorted}
-                                    onDataSizeChange={this.handleDataChange}
-                                    noDataIndication="There is no competition"
-                                    striped
-                                    hover
-                                    condensed
-                                />
+                                <div style={{ "text-align": "center", "vertical-align": "middle" }} >
+                                    <SearchBar {...props.searchProps} style={{ width: "400px", height: "40px" }} />
+                                    <TableUtil.ClearButton
+                                        {...props.searchProps}
+                                        clearAllFilter={this.clearAllFilter}
+                                    />
+                                    <TableUtil.SearchResult rowCount={this.state.rowCount} listSize={this.state.competitionList.length} />
+                                </div>
+                                <div style={{ width: "100%", padding: "10px" }} >
+                                    <div style={{ paddingBottom: "10px" }} >
+                                        <ToggleList {...props.columnToggleProps} />
+                                    </div>
+                                    <BootstrapTable
+                                        {...props.baseProps}
+                                        pagination={paginationFactory()}
+                                        filter={filterFactory()}
+                                        defaultSorted={TableUtil.competitionDefaultSorted}
+                                        onDataSizeChange={this.handleDataChange}
+                                        noDataIndication="There is no competition"
+                                        striped
+                                        hover
+                                        condensed
+                                    />
+                                </div>
                             </div>
                         )
                     }

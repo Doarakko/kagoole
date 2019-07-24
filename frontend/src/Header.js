@@ -2,6 +2,8 @@ import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import SaveModalButton from './modal/SaveModalButton';
+
 
 class Header extends React.Component {
     render() {
@@ -16,10 +18,14 @@ class Header extends React.Component {
                     <Nav className="mb-2 mr-sm-2 mb-sm-0">
                         <Link to="/solutions">Solution</Link>
                     </Nav>
-
-                    <Nav className="ml-auto">
-                        <Nav.Link href="https://docs.google.com/forms/d/e/1FAIpQLSeZlhz5UK92LLY126uBaKXIl8AstQpaxlPhWcC8aHO2SE5FeQ/viewform?usp=sf_link">Contact</Nav.Link>
-                        <Nav.Link href="https://github.com/Doarakko/kagoole">GitHub</Nav.Link>
+                    <Nav className="mb-2 mr-sm-2 mb-sm-0">
+                        <SaveModalButton buttonText='Add Solution' />
+                    </Nav>
+                    <Nav className="mb-2 mr-sm-2 mb-sm-0 navbar-collapse justify-content-end">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZlhz5UK92LLY126uBaKXIl8AstQpaxlPhWcC8aHO2SE5FeQ/viewform?usp=sf_link">Contact</a>
+                    </Nav>
+                    <Nav>
+                        <a href="https://github.com/Doarakko/kagoole">GitHub</a>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar >

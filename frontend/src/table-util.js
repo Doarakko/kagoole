@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Spinner } from "react-bootstrap"
+import { Badge, Button, Spinner } from "react-bootstrap"
 
 
 export const selectPredictTypeOptions = {
@@ -56,14 +56,16 @@ export function listToOneLineStringWithSlash(list) {
     return s;
 }
 
-export function SearchResult(rowCount, listSize) {
-    if (listSize === 0) {
+export const SearchResult = (props) => {
+    if (props.listSize === 0) {
         return (
             <Spinner animation="border" variant="primary" />
         );
     }
     return (
-        <div className='search-result'> {rowCount} / {listSize}</div >
+        <Badge variant="info" style={{ fontSize: "18px", margin: "10px", padding: "10px" }}>
+            {props.rowCount} / {props.listSize}
+        </Badge>
     );
 }
 
@@ -74,6 +76,6 @@ export const ClearButton = (props) => {
         props.clearAllFilter();
     };
     return (
-        <Button variant="secondary" onClick={handleClick}>Clear</Button>
+        <Button variant="secondary" onClick={handleClick} style={{ fontSize: "16px", padding: "5px", margin: "10px", height: "40px" }}>Clear</Button>
     );
 };
