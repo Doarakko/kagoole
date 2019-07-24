@@ -1,7 +1,6 @@
 import time
 import datetime
 
-from django.db.models import Count
 from rest_framework import serializers
 
 from kagoole.models import Competition, Solution

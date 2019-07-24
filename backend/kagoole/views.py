@@ -1,7 +1,6 @@
 from rest_framework import filters, generics, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
-
 from kagoole.models import Competition, Solution
 from kagoole.serializers import CompetitionSerializer, SolutionSerializer
 
