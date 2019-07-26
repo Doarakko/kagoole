@@ -14,6 +14,7 @@ import os
 
 import dotenv
 import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,9 +28,9 @@ dotenv.load_dotenv('.env')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://kagoole-api.herokuapp.com', 'http://localhost:3000']
 
 
 # Application definition
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'reversion',
+    'corsheaders',
     'kagoole',
 ]
 
@@ -57,6 +59,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'reversion.middleware.RevisionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    'https://kagoole.herokuapp.com',
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -129,3 +140,5 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
+
+django_heroku.settings(locals())
