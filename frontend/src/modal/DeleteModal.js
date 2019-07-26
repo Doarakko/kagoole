@@ -2,25 +2,22 @@ import React from "react";
 import axios from "axios";
 import { Button, Form, Modal } from "react-bootstrap";
 
+import * as Url from "../url";
+
 
 class DeleteModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
 
         this.handleSubmit = this.handleSubmit.bind(this);
     };
 
     handleSubmit(event) {
         axios
-            .delete("solutions/" + this.props.solution.id, {
-            }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
-            )
+            .delete(Url.api + "/solutions/" + this.props.solution.id + '/')
+            .then((results) => {
+                console.log(results)
+            })
             .catch(err => console.log(err));
     };
 

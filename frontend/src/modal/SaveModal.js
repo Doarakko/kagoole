@@ -5,6 +5,8 @@ import * as yup from "yup";
 import axios from "axios";
 import Select from 'react-select';
 
+import * as Url from "../url";
+
 
 const ErrorMessage = props => {
     return (
@@ -144,10 +146,10 @@ const EnhancedForm = withFormik({
     handleSubmit: (values) => {
         let result;
         axios
-            .get("solutions/", {
+            .get(Url.api + "/solutions/", {
                 params: {
                     url: values.solutionUrl,
-                }
+                },
             })
             .then((results) => {
                 result = results.data;
@@ -160,7 +162,7 @@ const EnhancedForm = withFormik({
                     );
                 } else {
                     axios
-                        .post("solutions/", {
+                        .post(Url.api + "/solutions/", {
                             competition: values.competition.ref,
                             rank: values.rank,
                             url: values.solutionUrl,
@@ -190,7 +192,7 @@ class CompetitionSelect extends React.Component {
 
     componentDidMount() {
         axios
-            .get("competitions/")
+            .get(Url.api + "/competitions/")
             .then((results) => {
                 this.setState({
                     competitionList: results.data

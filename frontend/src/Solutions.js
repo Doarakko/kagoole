@@ -6,7 +6,8 @@ import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-
 import ToolkitProvider, { ColumnToggle, Search } from 'react-bootstrap-table2-toolkit';
 
 import DeleteModalButton from './modal/DeleteModalButton';
-import * as TableUtil from './table-util'
+import * as TableUtil from './table-util';
+import * as Url from "./url";
 
 const { ToggleList } = ColumnToggle;
 const { SearchBar } = Search;
@@ -284,7 +285,7 @@ class Solutions extends React.Component {
 
     refreshSolutionList = () => {
         axios
-            .get("solutions/")
+            .get(Url.api + "/solutions/")
             .then((results) => {
                 this.setState({
                     solutionList: results.data,

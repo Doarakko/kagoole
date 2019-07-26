@@ -5,7 +5,9 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider, { ColumnToggle, Search } from 'react-bootstrap-table2-toolkit';
 
-import * as TableUtil from './table-util'
+import * as TableUtil from './table-util';
+import * as Url from "./url";
+
 
 const { ToggleList } = ColumnToggle;
 const { SearchBar } = Search;
@@ -226,7 +228,7 @@ class Competitions extends React.Component {
         if (row.solution_count === 0) {
             return 0;
         }
-        return <a href={'http://localhost:3000/solutions?title=' + row.title}> {row.solution_count}</a>
+        return <a href={Url.base + '/solutions?title=' + row.title}> {row.solution_count}</a>
     }
 
     clearAllFilter() {
@@ -245,7 +247,7 @@ class Competitions extends React.Component {
 
     refreshCompetitionList = () => {
         axios
-            .get("competitions/")
+            .get(Url.api + "/competitions/")
             .then((results) => {
                 this.setState({
                     competitionList: results.data
@@ -270,7 +272,7 @@ class Competitions extends React.Component {
                     {
                         props => (
                             <div>
-                                <div style={{ "text-align": "center", "vertical-align": "middle" }} >
+                                <div style={{ textAlign: "center", verticalAlign: "middle" }} >
                                     <SearchBar {...props.searchProps} style={{ width: "400px", height: "40px" }} />
                                     <TableUtil.ClearButton
                                         {...props.searchProps}
