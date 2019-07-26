@@ -47,4 +47,5 @@ class SolutionSerializer(serializers.ModelSerializer):
                 obj.competition, 'kaggle_competition_id'),
             reward=getattr(obj.competition, 'reward'),
             description=getattr(obj.competition, 'description'),
+            predict_type=getattr(obj.competition, 'predict_type'),
         )
