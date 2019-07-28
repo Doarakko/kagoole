@@ -9,7 +9,7 @@ class Header extends React.Component {
     render() {
         return (
             <Navbar bg="primary" variant="dark" expand="lg" className="header">
-                <Navbar.Brand href="#home">Kagoole</Navbar.Brand>
+                <Navbar.Brand>Kagoole</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mb-2 mr-sm-2 mb-sm-0">
