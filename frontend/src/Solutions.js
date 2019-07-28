@@ -62,6 +62,9 @@ class Solutions extends React.Component {
     }, {
         dataField: 'rank',
         text: 'Rank',
+        formatter: (cell, row) => (
+            this.rankFormatter(row.rank)
+        ),
         sort: true,
         align: 'center',
         headerAlign: 'center',
@@ -301,6 +304,13 @@ class Solutions extends React.Component {
         }
         params = decodeURI(params);
         return params.slice(params.indexOf('=') + 1);
+    }
+
+    rankFormatter(rank) {
+        if (rank === 32767) {
+            return "-";
+        }
+        return rank;
     }
 
     render() {
