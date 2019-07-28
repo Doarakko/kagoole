@@ -58,7 +58,7 @@ class Competition(models.Model):
 
 
 class Solution(models.Model):
-    rank = models.PositiveIntegerField()
+    rank = models.PositiveSmallIntegerField(default=32767)
     url = models.URLField(max_length=200, unique=True)
 
     MEDAL_CHOICES = [
