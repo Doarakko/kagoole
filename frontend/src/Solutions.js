@@ -63,7 +63,7 @@ class Solutions extends React.Component {
         dataField: 'rank',
         text: 'Rank',
         formatter: (cell, row) => (
-            this.rankFormatter(row.rank)
+            this.rankFormatter(row)
         ),
         sort: true,
         align: 'center',
@@ -306,11 +306,11 @@ class Solutions extends React.Component {
         return params.slice(params.indexOf('=') + 1);
     }
 
-    rankFormatter(rank) {
-        if (rank === 32767) {
+    rankFormatter(row) {
+        if (row.rank > row.competition_info.team_count) {
             return "-";
         }
-        return rank;
+        return row.rank;
     }
 
     render() {
