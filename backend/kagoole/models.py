@@ -5,6 +5,9 @@ from django.contrib.postgres.fields import ArrayField
 from kagoole.util import post_slack
 
 
+MAX_VALUE_POSITIVE_INTEGER_FIELD = 2147483647
+
+
 class Competition(models.Model):
     # id
     kaggle_competition_id = models.PositiveIntegerField(unique=True)
@@ -58,7 +61,8 @@ class Competition(models.Model):
 
 
 class Solution(models.Model):
-    rank = models.PositiveSmallIntegerField(default=32767)
+    rank = models.PositiveIntegerField(
+        default=MAX_VALUE_POSITIVE_INTEGER_FIELD)
     url = models.URLField(max_length=200, unique=True)
 
     MEDAL_CHOICES = [
