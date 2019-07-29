@@ -8,6 +8,8 @@ import Select from 'react-select';
 import * as Url from "../url";
 
 
+const MAX_VALUE_RANK = 2147483647;
+
 const ErrorMessage = props => {
     return (
         <div style={{ color: "red", marginTop: ".5rem" }} >
@@ -48,13 +50,20 @@ const SolutionSaveForm = props => {
                     placeholder="Private Leaderboard Rank"
                     name='rank'
                     id='rank'
-                    min="1"
-                    max={values.competition.team_count}
                     value={values.rank}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled={values.isNoRank ? "disabled" : ""}
                 />
                 <ErrorMessage name="rank" />
+                <Form.Label>No rank</Form.Label>
+                <Form.Check
+                    type="checkbox"
+                    name='isNoRank'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.isNoRank}
+                />
             </Form.Group>
             <Form.Group>
                 <Form.Label>Solution URL</Form.Label>
@@ -107,16 +116,20 @@ const SolutionSaveForm = props => {
     );
 };
 
-
-
 const EnhancedForm = withFormik({
     validationSchema: yup.object().shape({
         competition: yup.object()
             .required("Competition is required"),
         rank: yup.number()
-            .positive("Rank must be a positive number")
-            .integer()
-            .required("Rank is required"),
+            .when('isNoRank', {
+                is: false,
+                then: yup
+                    .number()
+                    .positive("Rank must be a positive number")
+                    .integer("Rank must be a integer")
+                    .required("Rank is required"),
+            }),
+        isNoRank: yup.boolean(),
         solutionUrl: yup.string()
             .url("Solution URL must be a valid URL")
             .required("Solution URL is required")
@@ -132,12 +145,14 @@ const EnhancedForm = withFormik({
         if (values.rank > values.competition.team_count) {
             errors.rank = "Team count is " + values.competition.team_count;
         }
+
         return errors;
     },
 
     mapPropsToValues: props => ({
         competition: "",
         rank: "",
+        isNoRank: false,
         solutionUrl: "",
         medal: "Gold",
         includeCode: false,
@@ -161,6 +176,11 @@ const EnhancedForm = withFormik({
                         + "Rank: " + result[0].rank + "\n"
                     );
                 } else {
+                    if (values.isNoRank) {
+                        values.rank = MAX_VALUE_RANK;
+                        values.medal = "Nothing";
+                    }
+
                     axios
                         .post(Url.api + "/solutions/", {
                             competition: values.competition.ref,

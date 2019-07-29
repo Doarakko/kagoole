@@ -69,7 +69,6 @@ export const SearchResult = (props) => {
     );
 }
 
-
 export const ClearButton = (props) => {
     const handleClick = () => {
         props.onSearch('');
@@ -78,4 +77,4 @@ export const ClearButton = (props) => {
     return (
         <Button variant="secondary" onClick={handleClick} style={{ fontSize: "16px", padding: "5px", margin: "10px", height: "40px" }}>Clear</Button>
     );
-};
+}
