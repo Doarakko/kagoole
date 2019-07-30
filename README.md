@@ -30,6 +30,7 @@ $ git clone https://github.com/Doarakko/kagoole
 ```
 $ cd backend
 $ pipenv shell
+$ pipenv install
 ```
 
 2. Heroku setting
@@ -64,7 +65,7 @@ And Slack is unnecessary.
 
 4. Migrate
 ```
-$ python manage.py makemigrations
+$ python manage.py makemigrations kagoole
 $ python manage.py migrate
 ```
 
@@ -77,8 +78,7 @@ $ python manage.py runscript starter
 ```
 $ python manage.py runserver
 ```
-
-
+Access to `http://localhost:8000`.
 
 ### Frontend
 1. Set
@@ -98,6 +98,8 @@ export const api = "http://localhost:8000";
 ```
 $ yarn start
 ```
+Access to `http://localhost:3000`.
+
 
 ## Contribution
 Welcome issue and pull request.
