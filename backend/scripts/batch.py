@@ -9,14 +9,6 @@ from backend import settings
 from kagoole.models import Competition, Solution
 
 
-PREDICT_TYPE = [
-    'classification',
-    'binary classification',
-    'multiclass classification',
-    'regression',
-]
-
-
 def new_kaggle_api():
     api = KaggleApi()
     api.authenticate()
@@ -126,8 +118,15 @@ def judge_data_types(tags, evaluation_metric):
 
 def judge_predict_type(tags, title, description, evaluation_metric):
     predict_type = None
+
+    predict_types = [
+        'classification',
+        'binary classification',
+        'multiclass classification',
+        'regression',
+    ]
     for tag in tags:
-        if tag in PREDICT_TYPE:
+        if tag in predict_types:
             predict_type = tag
 
     # judge based on title
