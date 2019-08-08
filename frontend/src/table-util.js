@@ -32,16 +32,16 @@ export const selectBooleanOptions = {
 };
 
 export const competitionDefaultSorted = [{
-    dataField: 'ended_at',
+    dataField: 'started_at',
     order: 'desc'
 }];
 
 export const solutionDefaultSorted = [{
-    dataField: 'rank',
-    order: 'asc'
-}, {
     dataField: 'competition_info.ended_at',
     order: 'desc'
+}, {
+    dataField: 'rank',
+    order: 'asc'
 }];
 
 export function listToOneLineStringWithSlash(list) {

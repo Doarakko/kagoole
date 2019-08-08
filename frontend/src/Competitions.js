@@ -138,7 +138,6 @@ class Competitions extends React.Component {
         formatter: cell => TableUtil.selectBooleanOptions[cell],
         filter: selectFilter({
             options: TableUtil.selectBooleanOptions,
-            defaultValue: true,
             getFilter: (filter) => {
                 canGetAwardPointsFilter = filter;
             }
