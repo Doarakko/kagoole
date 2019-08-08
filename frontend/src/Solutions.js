@@ -73,7 +73,6 @@ class Solutions extends React.Component {
         text: 'Medal',
         filter: selectFilter({
             options: TableUtil.selectMedalOptions,
-            defaultValue: true,
             getFilter: (filter) => {
                 medalFilter = filter;
             }
@@ -325,36 +324,35 @@ class Solutions extends React.Component {
                     columns={this.columns}
                     columnToggle
                     search
-                >{
-                        props => (
-                            <div>
-                                <div style={{ textAlign: "center", verticalAlign: "middle" }} >
-                                    <SearchBar {...props.searchProps} style={{ width: "400px", height: "40px" }} />
-                                    <TableUtil.ClearButton
-                                        {...props.searchProps}
-                                        clearAllFilter={this.clearAllFilter}
-                                    />
-                                    <TableUtil.SearchResult rowCount={this.state.rowCount} listSize={this.state.solutionList.length} />
-                                </div>
-                                <div style={{ width: "100%", padding: "10px" }} >
-                                    <div style={{ paddingBottom: "10px" }} >
-                                        <ToggleList {...props.columnToggleProps} />
-                                    </div>
-                                    <BootstrapTable
-                                        {...props.baseProps}
-                                        pagination={paginationFactory()}
-                                        filter={filterFactory()}
-                                        onDataSizeChange={this.handleDataChange}
-                                        defaultSorted={TableUtil.solutionDefaultSorted}
-                                        noDataIndication="There is no solution"
-                                        striped
-                                        hover
-                                        condensed
-                                    />
-                                </div>
+                >
+                    {props => (
+                        <div>
+                            <div style={{ textAlign: "center", verticalAlign: "middle" }} >
+                                <SearchBar {...props.searchProps} style={{ width: "400px", height: "40px" }} />
+                                <TableUtil.ClearButton
+                                    {...props.searchProps}
+                                    clearAllFilter={this.clearAllFilter}
+                                />
+                                <TableUtil.SearchResult rowCount={this.state.rowCount} listSize={this.state.solutionList.length} />
                             </div>
-                        )
-                    }
+                            <div style={{ width: "100%", padding: "10px" }} >
+                                <div style={{ paddingBottom: "10px" }} >
+                                    <ToggleList {...props.columnToggleProps} />
+                                </div>
+                                <BootstrapTable
+                                    {...props.baseProps}
+                                    pagination={paginationFactory()}
+                                    filter={filterFactory()}
+                                    onDataSizeChange={this.handleDataChange}
+                                    defaultSorted={TableUtil.solutionDefaultSorted}
+                                    noDataIndication="There is no solution"
+                                    striped
+                                    hover
+                                    condensed
+                                />
+                            </div>
+                        </div>
+                    )}
                 </ToolkitProvider>
             </div>
         );
