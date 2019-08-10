@@ -1,5 +1,5 @@
 # [Kagoole](https://kagoole.herokuapp.com)
-Search [Kaggle](https://www.kaggle.com) competition and solution.
+Search [Kaggle](https://www.kaggle.com) competitions and solutions.
 
 Solution is manual registration, so please share your solution.
 
