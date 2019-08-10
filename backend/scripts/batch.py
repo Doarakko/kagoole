@@ -7,6 +7,7 @@ from kaggle import KaggleApi
 
 from backend import settings
 from kagoole.models import Competition, Solution
+from kagoole.util import post_twitter
 
 
 def new_kaggle_api():
@@ -185,6 +186,14 @@ def create_competition(competition_dict):
         predict_type=competition_dict['predict_type'],
     )
 
+    message = 'New competition \"{}\" is lauched.\nAward Point: {}\nKernel Only: {}\n{}'.format(
+        competition_dict['title'],
+        competition_dict['can_get_award_points'],
+        competition_dict['is_kernel_only'],
+        competition_dict['url'],
+    )
+    post_twitter(message)
+
 
 # update new Competition model
 def update_competition(competition_dict):
@@ -226,6 +235,10 @@ def update_solution_count():
         competition.solution_count = Solution.objects.filter(
             competition=competition.ref).count()
         competition.save()
+
+
+def tweet_solution_count(period='weekly'):
+    pass
 
 
 def run():
