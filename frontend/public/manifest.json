@@ -1,6 +1,6 @@
 {
-  "short_name": "Kagoole",
-  "name": "Search and share Kaggle solution",
+  "name": "Kagoole",
+  "description": "Search Kaggle competitions and solutions",
   "icons": [
     {
       "src": "favicon.ico",
