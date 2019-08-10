@@ -19,6 +19,7 @@ psycopg2 = "*"
 gunicorn = "*"
 django-heroku = "*"
 django-cors-headers = "*"
+requests-oauthlib = "*"
 
 [requires]
 python_version = "3.6"
