@@ -20,7 +20,7 @@ class SaveModalButton extends React.Component {
             <ButtonToolbar>
                 <Button
                     variant="link"
-                    style={{ color: "white" }}
+                    style={{ color: "white", marginLeft: 0, paddingLeft: 0 }}
                     onClick={() => this.setState({ modalShow: true })}
                 >
                     {this.props.buttonText}
