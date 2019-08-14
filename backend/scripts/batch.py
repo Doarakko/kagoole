@@ -186,10 +186,11 @@ def create_competition(competition_dict):
         predict_type=competition_dict['predict_type'],
     )
 
-    message = 'New competition \"{}\" is lauched.\nAward Point: {}\nKernel Only: {}\n{}'.format(
+    message = 'New competition \"{}\" is lauched.\nMedal: {}\nKernel Only: {}\nData Types: {}\n{}'.format(
         competition_dict['title'],
         competition_dict['can_get_award_points'],
         competition_dict['is_kernel_only'],
+        competition_dict['data_types'],
         competition_dict['url'],
     )
     post_twitter(message)
