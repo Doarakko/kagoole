@@ -1,7 +1,7 @@
 # [Kagoole](https://kagoole.herokuapp.com)
-Search [Kaggle](https://www.kaggle.com) competitions and solutions.
+Search [Kaggle](https://www.kaggle.com) competitions and solutions based on data and predict type, evaluation metric, etc.
 
-Solution is manual registration, so please share your solution.
+![sample](https://doarakko.github.io/img/kagoole-sample.jpg)
 
 ## Development
 Please check the [development guide](./development.md).
