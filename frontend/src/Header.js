@@ -16,7 +16,7 @@ class Header extends React.Component {
                         <Link to="/competitions" style={{ color: "white" }}>Competition</Link>
                     </Nav>
                     <Nav className="mb-2 mr-sm-2 mb-sm-0">
-                        <Link to="/solutions" style={{ color: "white" }}>Solutions</Link>
+                        <Link to="/solutions" style={{ color: "white" }}>Solution</Link>
                     </Nav>
                     <Nav className="mr-auto">
                         <SaveModalButton buttonText='Add Solution' />
