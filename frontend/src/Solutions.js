@@ -5,7 +5,6 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { selectFilter, textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider, { ColumnToggle, Search } from 'react-bootstrap-table2-toolkit';
 
-import DeleteModalButton from './modal/DeleteModalButton';
 import * as TableUtil from './table-util';
 import * as Url from "./url";
 
@@ -247,18 +246,6 @@ class Solutions extends React.Component {
             }
         }),
         headerAlign: 'center',
-    }, {
-        isDummyField: true,
-        dataField: 'action',
-        text: 'Action',
-        formatter: (cell, row) => (
-            <div>
-                <DeleteModalButton solution={row} />
-            </div>
-        ),
-        align: 'center',
-        headerAlign: 'center',
-        hidden: true,
     }];
 
     componentDidMount() {
