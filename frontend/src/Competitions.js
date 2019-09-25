@@ -235,7 +235,7 @@ class Competitions extends React.Component {
         // organizationFilter();
         // descriptionFilter();
         isInProgressFilter('');
-        canGetAwardPointsFilter(true);
+        canGetAwardPointsFilter('');
         isKernelOnlyFilter('');
         // categoryFilter();
         dataTypesFilter('');
@@ -305,6 +305,3 @@ class Competitions extends React.Component {
 }
 
 export default Competitions;
-
-
-
