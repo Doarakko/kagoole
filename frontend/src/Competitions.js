@@ -258,7 +258,7 @@ class Competitions extends React.Component {
     render() {
         return (
             <div>
-                <h1>Competition Search</h1>
+                <h1>Kaggle Competition</h1>
 
                 <ToolkitProvider
                     bootstrap4

@@ -302,7 +302,7 @@ class Solutions extends React.Component {
     render() {
         return (
             <div>
-                <h1>Solution Search</h1>
+                <h1>Kaggle Solution</h1>
 
                 <ToolkitProvider
                     bootstrap4
