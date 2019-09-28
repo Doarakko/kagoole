@@ -24,6 +24,7 @@ class Header extends React.Component {
                     <Nav>
                         <Nav.Link href="https://twitter.com/kagoole" style={{ color: "white" }}>Twitter</Nav.Link>
                         <Nav.Link href="https://github.com/Doarakko/kagoole" style={{ color: "white" }}>GitHub</Nav.Link>
+                        <Nav.Link href="https://docs.google.com/forms/d/e/1FAIpQLSeimLl1BmBI6UnwKyLJClvtTr9vG-LymsaOrUEr0i12hAg4GA/viewform?usp=sf_link" style={{ color: "white" }}>Contact</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
