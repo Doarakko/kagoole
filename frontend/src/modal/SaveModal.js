@@ -189,10 +189,10 @@ const EnhancedForm = withFormik({
                             medal: values.medal,
                             include_code: values.includeCode,
                         }, {
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                }
+                            headers: {
+                                'Content-Type': 'application/json',
                             }
+                        }
                         )
                         .catch(err => console.log(err));
                 }
@@ -201,6 +201,14 @@ const EnhancedForm = withFormik({
     },
 })(SolutionSaveForm);
 
+const formatOptionLabel = ({ title, started_at, ended_at }) => (
+    <div style={{ display: "flex" }}>
+        <div>{title}</div>
+        <div style={{ marginLeft: "10px", color: "#999" }}>
+            {started_at.slice(0, 10)} ~ {ended_at.slice(0, 10)}
+        </div>
+    </div>
+);
 
 class CompetitionSelect extends React.Component {
     constructor(props) {
@@ -240,7 +248,8 @@ class CompetitionSelect extends React.Component {
                     onBlur={this.handleBlur}
                     value={this.props.value}
                     options={this.state.competitionList}
-                    getOptionLabel={option => option['title'] + ': ' + option['ended_at'].slice(0, 10)}
+                    getOptionLabel={option => option['title']}
+                    formatOptionLabel={formatOptionLabel}
                     getOptionValue={option => option['ref']}
                     noOptionsMessage={() => 'No competition'}
                     placeholder='Enter competition name'
