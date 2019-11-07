@@ -200,11 +200,22 @@ def create_competition(competition_dict):
 def update_competition(competition_dict):
     obj = Competition.objects.get(
         kaggle_competition_id=competition_dict['kaggle_competition_id'])
+    pre_ended_at = getattr(obj, 'ended_at')
 
     for (key, value) in competition_dict.items():
         setattr(obj, key, value)
 
     obj.save()
+
+    # tweet when competition deadline is changed
+    if competition_dict['ended_at'] != pre_ended_at:
+        message = 'Deadline of #kaggle competition \"{}\" is changed.\n\nAfter: {}\nBefore: {}\n{}'.format(
+            competition_dict['title'],
+            competition_dict['ended_at'],
+            pre_ended_at,
+            competition_dict['url'],
+        )
+        post_twitter(message)
 
 
 # create and update competitions
@@ -236,10 +247,6 @@ def update_solution_count():
         competition.solution_count = Solution.objects.filter(
             competition=competition.ref).count()
         competition.save()
-
-
-def tweet_solution_count(period='weekly'):
-    pass
 
 
 def run():
