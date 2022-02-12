@@ -2,7 +2,11 @@
 
 Search [Kaggle](https://www.kaggle.com) competitions and solutions based on data and predict type, evaluation metric, etc.
 
-[![sample](https://doarakko.github.io/img/kagoole-sample.jpg)](https://kagoole.herokuapp.com/)
+![](./sample.png)
+
+[This](https://twitter.com/kagoole) is Twitter account that tweet when new Kaggle competition is launched and competition deadline is changed.
+
+![](./tweet-example.png)
 
 ## Development
 
