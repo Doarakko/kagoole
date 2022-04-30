@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-import dotenv
 import dj_database_url
 import django_heroku
 
@@ -24,13 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-dotenv.load_dotenv('.env')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['https://kagoole-api.herokuapp.com', 'http://localhost:3000']
+ALLOWED_HOSTS = ['https://kagoole.herokuapp.com', 'https://kagoole-api.herokuapp.com', 'http://localhost:3000', '0.0.0.0']
 
 
 # Application definition
