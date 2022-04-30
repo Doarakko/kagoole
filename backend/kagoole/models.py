@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.postgres.fields import ArrayField
 
 from kagoole.util import post_slack
@@ -9,10 +8,13 @@ MAX_VALUE_POSITIVE_INTEGER_FIELD = 2147483647
 
 
 class Competition(models.Model):
-    # id
+    id = models.BigAutoField(primary_key=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     kaggle_competition_id = models.PositiveIntegerField(unique=True)
     # ref
-    ref = models.CharField(max_length=100, primary_key=True)
+    ref = models.CharField(max_length=100)
     # title
     title = models.CharField(max_length=100)
     # description
@@ -61,6 +63,10 @@ class Competition(models.Model):
 
 
 class Solution(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     rank = models.PositiveIntegerField(
         default=MAX_VALUE_POSITIVE_INTEGER_FIELD)
     url = models.URLField(max_length=200, unique=True)
