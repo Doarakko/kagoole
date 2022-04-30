@@ -7,7 +7,7 @@ defaults:
     working-directory: backend
 
 jobs:
-  generate-requirements.txt:
+  generate-requirements-txt:
     strategy:
       fail-fast: false
       matrix:
