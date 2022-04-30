@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: kagoole_backend
+    build: ./backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    links:
+      - db:db
+  db:
+    image: postgres:13.4
+    container_name: kagoole_db
+    ports:
+      - 5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+volumes:
+  db-data:

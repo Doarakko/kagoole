@@ -1,5 +1,6 @@
-export const api = "https://kagoole-api.herokuapp.com";
-export const contactForm = "https://kagoole-api.herokuapp.com";
-export const base = "https://kagoole.herokuapp.com";
+import dotenv from "dotenv";
 
+dotenv.config();
 
+export const api = process.env.REACT_APP_BACKEND_URL;
+export const base = process.env.REACT_APP_FRONTEND_URL;
