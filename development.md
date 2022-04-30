@@ -17,7 +17,7 @@ Run on local using Heroku PostgreSQL.
 
 ### Frontend
 
-- npm or Yarn
+- npm
 
 ## Setup
 
@@ -101,7 +101,7 @@ Access to `http://localhost:8000`.
 
 ```
 $ cd frontend
-$ yarn install
+$ npm install
 ```
 
 2. Change API URL to localhost
@@ -115,7 +115,7 @@ export const api = "http://localhost:8000";
 3. Run on local
 
 ```
-$ yarn start
+$ npm start
 ```
 
 Access to `http://localhost:3000`.
