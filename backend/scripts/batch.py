@@ -5,7 +5,6 @@ from pytz import timezone
 
 from kaggle import KaggleApi
 
-from backend import settings
 from kagoole.models import Competition, Solution
 from kagoole.util import post_twitter
 
@@ -193,7 +192,9 @@ def create_competition(competition_dict):
         competition_dict['data_types'],
         competition_dict['url'],
     )
-    post_twitter(message)
+
+    if os.environ.get('ENV') == 'production':
+        post_twitter(message)
 
 
 # update new Competition model
@@ -209,13 +210,15 @@ def update_competition(competition_dict):
 
     # tweet when competition deadline is changed
     if competition_dict['ended_at'] != pre_ended_at:
-        message = 'Deadline of #kaggle competition \"{}\" is changed.\n\nAfter: {}\nBefore: {}\n{}'.format(
+        message = 'Deadline of #kaggle competition \"{}\" is changed.\n\nBefore: {}\nAfter: {}\n{}'.format(
             competition_dict['title'],
-            competition_dict['ended_at'],
             pre_ended_at,
+            competition_dict['ended_at'],
             competition_dict['url'],
         )
-        post_twitter(message)
+
+        if os.environ.get('ENV') == 'production':
+            post_twitter(message)
 
 
 # create and update competitions
