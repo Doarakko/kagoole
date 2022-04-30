@@ -12,8 +12,8 @@ Run on local using Heroku PostgreSQL.
 
 ### Backend
 
-- Python 3.6
-- Pipenv
+- Python 3.9
+- Poetry
 
 ### Frontend
 
@@ -31,8 +31,8 @@ $ git clone https://github.com/Doarakko/kagoole
 
 ```
 $ cd backend
-$ pipenv shell
-$ pipenv install
+$ poetry shell
+$ poetry install
 ```
 
 2. Heroku setting
