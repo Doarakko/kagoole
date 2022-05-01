@@ -250,7 +250,7 @@ def save_competitions(page, in_progress=True):
 def update_solution_count():
     for competition in Competition.objects.all():
         competition.solution_count = Solution.objects.filter(
-            competition=competition.ref).count()
+            competition=competition.id).count()
         competition.save()
 
 
