@@ -16,6 +16,11 @@ def new_kaggle_api():
     return api
 
 
+def print_competition_all_property(competition):
+    for key, value in competition.__dict__.items():
+        print(key, value)
+
+
 # create new competition dictionary
 def new_competition_dict(competition):
     competition_dict = {}
@@ -25,11 +30,8 @@ def new_competition_dict(competition):
     competition_dict['title'] = title
     description = getattr(competition, 'description')
     competition_dict['description'] = description
-
-    ref = getattr(competition, 'ref')
-    competition_dict['ref'] = ref
-    # Do not use url directly, because many competition url is null
-    competition_dict['url'] = 'https://www.kaggle.com/c/' + ref
+    competition_dict['ref'] = getattr(competition, 'ref')
+    competition_dict['url'] = getattr(competition, 'url')
 
     competition_dict['can_get_award_points'] = getattr(
         competition, 'awardsPoints')
