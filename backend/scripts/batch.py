@@ -212,7 +212,7 @@ def update_competition(competition_dict):
 
     # tweet when competition deadline is changed
     if competition_dict['ended_at'] != pre_ended_at:
-        message = 'Deadline of #kaggle competition \"{}\" is changed.\n\nBefore: {}\nAfter: {}\n{}'.format(
+        message = 'Deadline of #kaggle competition \"{}\" is changed.\n\nBefore: {}\nAfter: {}\n\nFor special types of competitions such as 2 stage competition, this may not be a deadline change.\nSee here for accurate information.{}/overview/timeline'.format(
             competition_dict['title'],
             pre_ended_at,
             competition_dict['ended_at'],
