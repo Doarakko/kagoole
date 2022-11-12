@@ -65,6 +65,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
     'https://kagoole.herokuapp.com',
+    'https://kagoole.herokuapp.com',
     'http://localhost:3000',
 ]
 
