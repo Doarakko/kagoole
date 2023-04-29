@@ -1,12 +1,15 @@
-# [Kagoole](https://kagoole.herokuapp.com)
+# Kagoole
 
 Search [Kaggle](https://www.kaggle.com) competitions and solutions based on data and predict type, evaluation metric, etc.
 
-![](./sample.png)
+> **Warning**
+> This website has closed. Twitter account is active.
 
-[This](https://twitter.com/kagoole) is Twitter account that tweet when new Kaggle competition is launched and competition deadline is changed.
+![sample](./sample.png)
 
-![](./tweet-example.png)
+[This](https://twitter.com/kagoole) is Twitter account that tweet when new Kaggle competition is launched.
+
+![tweet example](./tweet-example.png)
 
 ## Requirements
 
@@ -26,7 +29,7 @@ cp frontend/.env.example frontend/.env
 
 Enter your Kaggle username and key to `.env`.
 
-```
+```env
 KAGGLE_KEY=bbbb
 KAGGLE_USERNAME=cccc
 ```
